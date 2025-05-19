@@ -3,7 +3,8 @@ import os
 import requests
 from flask import Flask
 from threading import Thread
-
+from datetime import datetime
+import pytz
 
 TOKEN = os.environ.get("TOKEN")
 WEBHOOK_URL = os.environ.get("WEBHOOK_URL")
@@ -20,7 +21,7 @@ def home():
 def run():
     app.run(host='0.0.0.0', port=8080)
 
-# Run the Flask web server in a separate thread
+# Run Flask server in background
 Thread(target=run).start()
 
 @client.event
@@ -30,14 +31,20 @@ async def on_ready():
 @client.event
 async def on_message(message):
     print(f"[LOG] New message from {message.author}: {message.content}")
-    
+
     if message.content.strip() == "!status":
         await message.channel.send(f"✅ I’m alive as {client.user}")
         return
 
-
     if message.author.bot:
         print("[LOG] Ignored bot message")
+        return
+
+    # ⏰ Restrict to 08:00–22:00 Thai time
+    tz = pytz.timezone("Asia/Bangkok")
+    now = datetime.now(tz)
+    if now.hour < 7 or now.hour >= 21:
+        print("[LOG] Outside active hours. Ignoring message.")
         return
 
     if message.attachments:
@@ -56,6 +63,5 @@ async def on_message(message):
                 print(f"[LOG] Sent to Pipedream. Response: {res.status_code}")
             except Exception as e:
                 print(f"[ERROR] Failed to send to Pipedream: {e}")
-
 
 client.run(TOKEN)
