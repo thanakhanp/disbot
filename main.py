@@ -1,3 +1,4 @@
+#main.py
 import discord
 import os
 import requests
@@ -61,6 +62,7 @@ async def on_message(message):
             try:
                 res = requests.post(WEBHOOK_URL, json=data)
                 print(f"[LOG] Sent to Pipedream. Response: {res.status_code}")
+                await message.channel.send(f"✅ Data uploaded")
             except Exception as e:
                 print(f"[ERROR] Failed to send to Pipedream: {e}")
 
