@@ -150,7 +150,7 @@ async def on_message(message):
                 "caption": caption_to_use,
                 "ftype": file_type
             }
-             try:
+            try:
                 res = requests.post(WEBHOOK_URL, json=data)
                 print(f"[LOG] Sent to Pipedream. Response: {res.status_code}")
                 if res.status_code in [200, 202]:
