@@ -54,7 +54,7 @@ async def on_message(message):
     # ⏰ Restrict to 08:00–22:00 Thai time
     tz = pytz.timezone("Asia/Bangkok")
     now = datetime.now(tz)
-    if now.hour < 8 or now.hour >= 22:
+    if now.hour < 8 or now.hour >= 23.5:
         print("[LOG] Outside active hours. Ignoring message.")
         return
 
