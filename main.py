@@ -75,7 +75,7 @@ async def on_message(message):
         ### Check file type  ###
         if is_image(attachment):
             file_type = "photo"
-            filename = f"{timestamp}_{caption}"
+            filename = f"{timestamp}_{caption}.jpg"
         else:
             file_type = "file"
             filename = f"{timestamp}_{attachment.filename}" 
@@ -130,7 +130,7 @@ async def on_message(message):
             if is_image(attachment):
                 file_type = "photo"
                 indexed_caption = f"{caption}_{i}"
-                filename = f"{timestamp}_{caption}_{i}"
+                filename = f"{timestamp}_{caption}_{i}.jpg"
                 caption_to_use = indexed_caption
             else:
                 file_type = "file"
