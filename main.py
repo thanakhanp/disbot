@@ -22,6 +22,7 @@ WEBHOOK_URL = os.environ.get("WEBHOOK_URL")
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
+allowed_channels = [1369712932006527179]
 
 ### Set up flask for web server ###
 app = Flask('')
@@ -62,6 +63,10 @@ async def on_message(message):
     if not message.attachments:
         print("[LOG] Message received without attachment. Skipping.")
         return
+    ### Protect not allowed_channels ###
+    if message.channel.id not in allowed_channels:
+        print("[LOG] Message not in allowed channel. Ignoring.")
+        return  # Ignore messages from other channels
 
     print(f"[LOG] {len(message.attachments)} attachment(s) found")
     caption = message.content.strip().replace("/", "_") or "No_Caption"
