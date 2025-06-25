@@ -1,4 +1,4 @@
-#main.py
+#disbot.py
 '''This code is for running discord bot for save photo on construction line check 
   1.create folder YYMMDD for each day the photo was sent
   2.rename photo to YYmmddhhmm_caption and save for the folder in that day'''
