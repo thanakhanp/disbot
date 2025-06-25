@@ -7,6 +7,7 @@
 import discord
 import os
 import requests
+from dotenv import load_dotenv
 from flask import Flask
 from threading import Thread
 from datetime import datetime
@@ -15,6 +16,7 @@ from utils import is_image
 
 
 ### for get token and webhook from pipedream ###
+load_dotenv()
 TOKEN = os.environ.get("TOKEN")
 WEBHOOK_URL = os.environ.get("WEBHOOK_URL")
 
@@ -28,7 +30,7 @@ allowed_channels = [1369712932006527179]
 app = Flask('')
 @app.route('/')
 def home():
-    return "🤖 Discord bot is alive!"
+    return "๐ค– Discord bot is alive!"
 
 def run():
     app.run(host='0.0.0.0', port=8080)
@@ -38,21 +40,21 @@ Thread(target=run).start()
 
 @client.event
 async def on_ready():
-    print(f"✅ Logged in as {client.user}")
+    print(f"โ… Logged in as {client.user}")
 
 @client.event
 async def on_message(message):
     print(f"[LOG] New message from {message.author}: {message.content}")
 
     if message.content.strip() == "!status":
-        await message.channel.send(f"✅ I’m alive as {client.user}\n Please send me a photo or file to save it.")
+        await message.channel.send(f"โ… Iโ€m alive as {client.user}\n Please send me a photo or file to save it.")
         return
 
     if message.author.bot:
         print("[LOG] Ignored bot message")
         return
 
-    # ⏰ Restrict to 08:00–22:00 Thai time
+    # โฐ Restrict to 08:00โ€“22:00 Thai time
     tz = pytz.timezone("Asia/Bangkok")
     now = datetime.now(tz)
     if now.hour < 8 or now.hour >= 23.5:
@@ -105,28 +107,28 @@ async def on_message(message):
                 try:
                     result = res.json()
                     if result.get("status") == "success":
-                        await message.channel.send(f"✅ File `{filename}` was uploaded and processed by Power Automate!")
+                        await message.channel.send(f"โ… File `{filename}` was uploaded and processed by Power Automate!")
                     else:
                         await message.channel.send(
-                            f"❌ Flow error: {result.get('error', 'Unknown error')}"
+                            f"โ Flow error: {result.get('error', 'Unknown error')}"
                         )
                 except Exception as e:
-                    await message.channel.send(f"⚠️ Uploaded, but could not read status from Power Automate: {e}")
+                    await message.channel.send(f"โ ๏ธ Uploaded, but could not read status from Power Automate: {e}")
             else:
-                await message.channel.send(f"❌ Failed to upload `{filename}`")
+                await message.channel.send(f"โ Failed to upload `{filename}`")
         except Exception as e:
             print(f"[ERROR] Failed to send to Pipedream: {e}")
-            await message.channel.send(f"❌ Upload error: {e}")
+            await message.channel.send(f"โ Upload error: {e}")
         '''try:
             res = requests.post(WEBHOOK_URL, json=data)
             print(f"[LOG] Sent to Pipedream. Response: {res.status_code}")
             if res.status_code == 200 or 202:
-                await message.channel.send(f"✅ File `{filename}` was already uploaded")
+                await message.channel.send(f"โ… File `{filename}` was already uploaded")
             else:
-                await message.channel.send(f"❌ Failed to upload `{filename}`")
+                await message.channel.send(f"โ Failed to upload `{filename}`")
         except Exception as e:
             print(f"[ERROR] Failed to send to Pipedream: {e}")
-            await message.channel.send(f"❌ Upload error: {e}")'''
+            await message.channel.send(f"โ Upload error: {e}")'''
 
     ### Else More than 1 files	###
     else:
@@ -162,28 +164,27 @@ async def on_message(message):
                     try:
                         result = res.json()
                         if result.get("status") == "success":
-                            await message.channel.send(f"✅ File `{filename}` was uploaded and processed by Power Automate!")
+                            await message.channel.send(f"โ… File `{filename}` was uploaded and processed by Power Automate!")
                         else:
                             await message.channel.send(
-                                f"❌ Flow error: {result.get('error', 'Unknown error')}"
+                                f"โ Flow error: {result.get('error', 'Unknown error')}"
                             )
                     except Exception as e:
-                        await message.channel.send(f"⚠️ Uploaded, but could not read status from Power Automate: {e}")
+                        await message.channel.send(f"โ ๏ธ Uploaded, but could not read status from Power Automate: {e}")
                 else:
-                    await message.channel.send(f"❌ Failed to upload `{filename}`")
+                    await message.channel.send(f"โ Failed to upload `{filename}`")
             except Exception as e:
                 print(f"[ERROR] Failed to send to Pipedream: {e}")
-                await message.channel.send(f"❌ Upload error: {e}")
+                await message.channel.send(f"โ Upload error: {e}")
             '''try:
                 res = requests.post(WEBHOOK_URL, json=data)
                 print(f"[LOG] Sent to Pipedream. Response: {res.status_code}")
                 if res.status_code == 200 or 202 :
-                    await message.channel.send(f"✅ File `{filename}` was already uploaded")
+                    await message.channel.send(f"โ… File `{filename}` was already uploaded")
                 else:
-                    await message.channel.send(f"❌ Failed to upload `{filename}`")
+                    await message.channel.send(f"โ Failed to upload `{filename}`")
             except Exception as e:
                 print(f"[ERROR] Failed to send to Pipedream: {e}")
-                await message.channel.send(f"❌ Upload error: {e}")'''
+                await message.channel.send(f"โ Upload error: {e}")'''
 
 client.run(TOKEN)
-
